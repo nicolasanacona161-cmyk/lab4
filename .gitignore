@@ -1,0 +1,8 @@
+build/
+.qtcreator/
+*.exe
+*.o
+*.obj
+*.user
+*.pdf
+*.pptx
