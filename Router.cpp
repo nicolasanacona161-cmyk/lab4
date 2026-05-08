@@ -4,10 +4,10 @@
 #include <climits>
 #include <algorithm>
 
-Router::Router(int id) : idRouter(id), previo(nullptr), distancia(INT_MAX), visitado(false) {} //
+Router::Router(int id) : idRouter(id), previo(nullptr), distancia(INT_MAX), visitado(false) {}
 
 void Router::nuevoVecino(Router* vecino, int costo) {
-    vecinos.emplace_back(vecino, costo); // en vez de push_back, porque construyo el elemento que es un par
+    vecinos.emplace_back(vecino, costo);
 }
 
 void Router::confDistancia(int dist) {
@@ -25,28 +25,27 @@ void Router::reinicio() {
 }
 
 void dijkstra(Router* fuente) {
-    fuente->confDistancia(0); //(*fuente).confDistancia(0); es equivalente con dereferenciación
+    fuente->confDistancia(0);
 
-    priority_queue<pair<int, Router*>> pq; //es una cola que tiene un valor adicional(prioridad), el elemento con mayor prio se guarda al inicio
+    priority_queue<pair<int, Router*>> pq;
     pq.push({0, fuente});
 
     while (!pq.empty()) {
-        Router* actual = pq.top().second; //Tomo el valor del router del primer elemento de la cola
+        Router* actual = pq.top().second;
         pq.pop();
-
 
         if (actual->visitado) continue;
 
         actual->visitado = true;
 
-        for (auto& vec : actual->vecinos) { //leo los vecinos del router actual
-            Router* sigRouter = vec.first; //vecinos es un vector de pares, el primero es un router
-            int costoBorde = vec.second; //lo que cuesta el borde a ese primer vecino
+        for (auto& vec : actual->vecinos) {
+            Router* sigRouter = vec.first;
+            int costoBorde = vec.second;
 
-            int nuevaDistancia = actual->distancia + costoBorde; //La distancia es un valor de la fuente al router
+            int nuevaDistancia = actual->distancia + costoBorde;
             if (nuevaDistancia < sigRouter->distancia) {
                 sigRouter->confDistancia(nuevaDistancia);
-                sigRouter->previo = actual;  // <- Guardar el nodo anterior
+                sigRouter->previo = actual;
                 pq.push({-nuevaDistancia, sigRouter});
             }
         }
@@ -73,7 +72,7 @@ void imprimirCamino(Router* destino) {
 
     cout << "Camino mas corto: ";
     for (size_t i = 0; i < camino.size(); ++i) {
-        cout << char('A' + camino[i]);  // Asumimos que 0->A, 1->B, ...
+        cout << char('A' + camino[i]);
         if (i != camino.size() - 1)
             cout << " -> ";
     }
