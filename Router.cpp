@@ -1,10 +1,7 @@
 #include <iostream>
 #include "Router.h"
-#include <queue>
-#include <climits>
-#include <algorithm>
 
-Router::Router(int id) : idRouter(id), previo(nullptr), distancia(INT_MAX), visitado(false) {}
+Router::Router(int id) : idRouter(id), previo(nullptr), distancia(INFINITO), visitado(false) {}
 
 void Router::nuevoVecino(Router* vecino, int costo) {
     vecinos.emplace_back(vecino, costo);
@@ -19,7 +16,7 @@ void Router::actualizarCosto(int destino, int costo) {
 }
 
 void Router::reinicio() {
-    distancia = INT_MAX;
+    distancia = INFINITO;
     visitado = false;
     previo = nullptr;
 }
@@ -27,16 +24,44 @@ void Router::reinicio() {
 void calcularRutas(Router* fuente) {
     fuente->cambiarDistancia(0);
 
-    priority_queue<pair<int, Router*>> cola;
-    cola.push({0, fuente});
+    bool quedanRouters = true;
 
-    while (!cola.empty()) {
-        Router* actual = cola.top().second;
-        cola.pop();
+    while (quedanRouters) {
+        Router* actual = nullptr;
+        quedanRouters = false;
 
-        if (actual->visitado) continue;
+        vector<Router*> pendientes;
+        pendientes.push_back(fuente);
 
-        actual->visitado = true;
+        for (size_t i = 0; i < pendientes.size(); ++i) {
+            Router* routerActual = pendientes[i];
+
+            if (!routerActual->visitado && routerActual->distancia < INFINITO) {
+                if (actual == nullptr || routerActual->distancia < actual->distancia) {
+                    actual = routerActual;
+                }
+                quedanRouters = true;
+            }
+
+            for (auto& vecino : routerActual->vecinos) {
+                Router* routerVecino = vecino.first;
+                bool yaEsta = false;
+
+                for (Router* routerPendiente : pendientes) {
+                    if (routerPendiente == routerVecino) {
+                        yaEsta = true;
+                    }
+                }
+
+                if (!yaEsta) {
+                    pendientes.push_back(routerVecino);
+                }
+            }
+        }
+
+        if (actual == nullptr) {
+            return;
+        }
 
         for (auto& vec : actual->vecinos) {
             Router* routerVecino = vec.first;
@@ -46,28 +71,24 @@ void calcularRutas(Router* fuente) {
             if (nuevaDistancia < routerVecino->distancia) {
                 routerVecino->cambiarDistancia(nuevaDistancia);
                 routerVecino->previo = actual;
-                cola.push({-nuevaDistancia, routerVecino});
             }
         }
+
+        actual->visitado = true;
     }
 }
 
 vector<int> obtenerRuta(Router* destino) {
-    vector<Router*> camino;
-    for (Router* r = destino; r != nullptr; r = r->previo) {
-        camino.push_back(r);
-    }
-    reverse(camino.begin(), camino.end());
-
     vector<int> ruta;
-    for (Router* router : camino) {
-        ruta.push_back(router->idRouter);
+
+    for (Router* r = destino; r != nullptr; r = r->previo) {
+        ruta.insert(ruta.begin(), r->idRouter);
     }
 
     return ruta;
 }
 
-void imprimirCamino(Router* destino) {
+void coutCamino(Router* destino) {
     vector<int> camino = obtenerRuta(destino);
 
     cout << "Camino mas corto: ";

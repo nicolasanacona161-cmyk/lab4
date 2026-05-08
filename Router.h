@@ -7,6 +7,8 @@
 
 using namespace std;
 
+const int INFINITO = 1000000;
+
 class Router {
 public:
     Router(int id);
@@ -26,6 +28,6 @@ public:
 
 void calcularRutas(Router* fuente);
 vector<int> obtenerRuta(Router* destino);
-void imprimirCamino(Router* destino);
+void coutCamino(Router* destino);
 
 #endif
