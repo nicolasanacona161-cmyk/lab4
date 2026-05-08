@@ -10,7 +10,7 @@ void Router::nuevoVecino(Router* vecino, int costo) {
     vecinos.emplace_back(vecino, costo);
 }
 
-void Router::confDistancia(int dist) {
+void Router::cambiarDistancia(int dist) {
     distancia = dist;
 }
 
@@ -24,35 +24,35 @@ void Router::reinicio() {
     previo = nullptr;
 }
 
-void dijkstra(Router* fuente) {
-    fuente->confDistancia(0);
+void calcularRutas(Router* fuente) {
+    fuente->cambiarDistancia(0);
 
-    priority_queue<pair<int, Router*>> pq;
-    pq.push({0, fuente});
+    priority_queue<pair<int, Router*>> cola;
+    cola.push({0, fuente});
 
-    while (!pq.empty()) {
-        Router* actual = pq.top().second;
-        pq.pop();
+    while (!cola.empty()) {
+        Router* actual = cola.top().second;
+        cola.pop();
 
         if (actual->visitado) continue;
 
         actual->visitado = true;
 
         for (auto& vec : actual->vecinos) {
-            Router* sigRouter = vec.first;
-            int costoBorde = vec.second;
+            Router* routerVecino = vec.first;
+            int costoEnlace = vec.second;
 
-            int nuevaDistancia = actual->distancia + costoBorde;
-            if (nuevaDistancia < sigRouter->distancia) {
-                sigRouter->confDistancia(nuevaDistancia);
-                sigRouter->previo = actual;
-                pq.push({-nuevaDistancia, sigRouter});
+            int nuevaDistancia = actual->distancia + costoEnlace;
+            if (nuevaDistancia < routerVecino->distancia) {
+                routerVecino->cambiarDistancia(nuevaDistancia);
+                routerVecino->previo = actual;
+                cola.push({-nuevaDistancia, routerVecino});
             }
         }
     }
 }
 
-vector<int> routes(Router* destino) {
+vector<int> obtenerRuta(Router* destino) {
     vector<Router*> camino;
     for (Router* r = destino; r != nullptr; r = r->previo) {
         camino.push_back(r);
@@ -68,7 +68,7 @@ vector<int> routes(Router* destino) {
 }
 
 void imprimirCamino(Router* destino) {
-    vector<int> camino = routes(destino);
+    vector<int> camino = obtenerRuta(destino);
 
     cout << "Camino mas corto: ";
     for (size_t i = 0; i < camino.size(); ++i) {

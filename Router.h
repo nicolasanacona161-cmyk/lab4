@@ -19,13 +19,13 @@ public:
     bool visitado;
 
     void nuevoVecino(Router* vecino, int costo);
-    void confDistancia(int distancia);
+    void cambiarDistancia(int distancia);
     void actualizarCosto(int destino, int costo);
     void reinicio();
 };
 
-void dijkstra(Router* fuente);
-vector<int> routes(Router* destino);
+void calcularRutas(Router* fuente);
+vector<int> obtenerRuta(Router* destino);
 void imprimirCamino(Router* destino);
 
 #endif
