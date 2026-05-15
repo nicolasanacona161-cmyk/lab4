@@ -4,6 +4,13 @@
 Router::Router(int id) : idRouter(id), previo(nullptr), distancia(INFINITO), visitado(false) {}
 
 void Router::nuevoVecino(Router* vecino, int costo) {
+    for (auto& parVecino : vecinos) {
+        if (parVecino.first == vecino) {
+            parVecino.second = costo;
+            return;
+        }
+    }
+
     vecinos.emplace_back(vecino, costo);
 }
 
