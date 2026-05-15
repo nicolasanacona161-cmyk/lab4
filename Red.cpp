@@ -2,7 +2,9 @@
 
 #include <algorithm>
 #include <climits>
+#include <fstream>
 #include <iostream>
+#include <sstream>
 
 void Red::agregarRouter(int id) {
     if (routers.find(id) == routers.end()) {
@@ -134,6 +136,32 @@ int Red::costoCamino(const vector<int>& camino) const {
     }
 
     return costoTotal;
+}
+
+bool Red::cargarDesdeArchivo(const string& rutaArchivo) {
+    ifstream archivo(rutaArchivo);
+    if (!archivo.is_open()) {
+        return false;
+    }
+
+    routers.clear();
+    string linea;
+    while (getline(archivo, linea)) {
+        if (linea.empty() || linea[0] == '#') {
+            continue;
+        }
+
+        istringstream iss(linea);
+        int origen = 0, destino = 0, costo = 0;
+        if (!(iss >> origen >> destino >> costo)) {
+            continue;
+        }
+
+        conectarRouters(origen, destino, costo);
+    }
+
+    actualizarTablas();
+    return true;
 }
 
 void Red::imprimirTopologia() const {

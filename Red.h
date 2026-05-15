@@ -18,6 +18,7 @@ public:
     void actualizarTablas();
     vector<int> calcularCamino(int origen, int destino);
     int costoCamino(const vector<int>& camino) const;
+    bool cargarDesdeArchivo(const string& rutaArchivo);
     void imprimirTopologia() const;
     void imprimirTablas() const;
 
