@@ -4,6 +4,7 @@
 #include "Router.h"
 
 #include <map>
+#include <string>
 #include <vector>
 
 using namespace std;
@@ -16,6 +17,7 @@ public:
     bool eliminarEnlace(int origen, int destino);
     void actualizarTablas();
     vector<int> calcularCamino(int origen, int destino);
+    int costoCamino(const vector<int>& camino) const;
     void imprimirTopologia() const;
     void imprimirTablas() const;
 

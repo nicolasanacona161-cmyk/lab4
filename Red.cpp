@@ -104,6 +104,38 @@ vector<int> Red::calcularCamino(int origen, int destino) {
     return routes(&routers.at(destino));
 }
 
+int Red::costoCamino(const vector<int>& camino) const {
+    if (camino.empty()) {
+        return INT_MAX;
+    }
+
+    int costoTotal = 0;
+    for (size_t i = 0; i + 1 < camino.size(); ++i) {
+        int actual = camino[i];
+        int siguiente = camino[i + 1];
+
+        auto it = routers.find(actual);
+        if (it == routers.end()) {
+            return INT_MAX;
+        }
+
+        bool encontrado = false;
+        for (const auto& vecino : it->second.vecinos) {
+            if (vecino.first->idRouter == siguiente) {
+                costoTotal += vecino.second;
+                encontrado = true;
+                break;
+            }
+        }
+
+        if (!encontrado) {
+            return INT_MAX;
+        }
+    }
+
+    return costoTotal;
+}
+
 void Red::imprimirTopologia() const {
     cout << "Topologia de la red:" << endl;
 
