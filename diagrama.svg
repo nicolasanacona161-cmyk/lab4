@@ -1,0 +1,67 @@
+<svg width="1000" height="700" viewBox="0 0 1000 700" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="1000" height="700" fill="white"/>
+
+  <defs>
+    <marker id="flecha" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#111111"/>
+    </marker>
+  </defs>
+
+  <text x="500" y="38" text-anchor="middle" fill="#111111" font-family="Arial" font-size="24" font-weight="bold">
+    Diagrama de clases - Red de routers
+  </text>
+
+  <rect x="50" y="80" width="400" height="410" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+  <rect x="50" y="80" width="400" height="44" fill="#dbeafe" stroke="#111111" stroke-width="2"/>
+  <text x="250" y="108" text-anchor="middle" fill="#111111" font-family="Arial" font-size="20" font-weight="bold">Router</text>
+
+  <line x1="50" y1="164" x2="450" y2="164" stroke="#111111" stroke-width="1.5"/>
+  <text x="72" y="150" fill="#111111" font-family="Arial" font-size="16" font-weight="bold">Atributos</text>
+  <text x="72" y="190" fill="#111111" font-family="Arial" font-size="16">+ idRouter : int</text>
+  <text x="72" y="218" fill="#111111" font-family="Arial" font-size="16">+ previo : Router*</text>
+  <text x="72" y="246" fill="#111111" font-family="Arial" font-size="16">+ vecinos : vector&lt;pair&lt;Router*, int&gt;&gt;</text>
+  <text x="72" y="274" fill="#111111" font-family="Arial" font-size="16">+ tablaCostos : map&lt;int, int&gt;</text>
+  <text x="72" y="302" fill="#111111" font-family="Arial" font-size="16">+ distancia : int</text>
+  <text x="72" y="330" fill="#111111" font-family="Arial" font-size="16">+ visitado : bool</text>
+
+  <line x1="50" y1="354" x2="450" y2="354" stroke="#111111" stroke-width="1.5"/>
+  <text x="72" y="382" fill="#111111" font-family="Arial" font-size="16" font-weight="bold">Metodos</text>
+  <text x="72" y="410" fill="#111111" font-family="Arial" font-size="16">+ Router(id : int)</text>
+  <text x="72" y="438" fill="#111111" font-family="Arial" font-size="16">+ nuevoVecino(vecino : Router*, costo : int)</text>
+  <text x="72" y="466" fill="#111111" font-family="Arial" font-size="16">+ cambiarDistancia(distancia : int)</text>
+
+  <rect x="560" y="80" width="390" height="470" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+  <rect x="560" y="80" width="390" height="44" fill="#dbeafe" stroke="#111111" stroke-width="2"/>
+  <text x="755" y="108" text-anchor="middle" fill="#111111" font-family="Arial" font-size="20" font-weight="bold">Red</text>
+
+  <line x1="560" y1="164" x2="950" y2="164" stroke="#111111" stroke-width="1.5"/>
+  <text x="582" y="150" fill="#111111" font-family="Arial" font-size="16" font-weight="bold">Atributos</text>
+  <text x="582" y="190" fill="#111111" font-family="Arial" font-size="16">- routers : map&lt;int, Router&gt;</text>
+
+  <line x1="560" y1="216" x2="950" y2="216" stroke="#111111" stroke-width="1.5"/>
+  <text x="582" y="246" fill="#111111" font-family="Arial" font-size="16" font-weight="bold">Metodos</text>
+  <text x="582" y="274" fill="#111111" font-family="Arial" font-size="16">+ agregarRouter(id : int)</text>
+  <text x="582" y="302" fill="#111111" font-family="Arial" font-size="16">+ eliminarRouter(id : int) : bool</text>
+  <text x="582" y="330" fill="#111111" font-family="Arial" font-size="16">+ conectarRouters(origen, destino, costo)</text>
+  <text x="582" y="358" fill="#111111" font-family="Arial" font-size="16">+ eliminarEnlace(origen, destino) : bool</text>
+  <text x="582" y="386" fill="#111111" font-family="Arial" font-size="16">+ actualizarTablas()</text>
+  <text x="582" y="414" fill="#111111" font-family="Arial" font-size="16">+ calcularCamino(origen, destino) : vector&lt;int&gt;</text>
+  <text x="582" y="442" fill="#111111" font-family="Arial" font-size="16">+ costoCamino(camino) : int</text>
+  <text x="582" y="470" fill="#111111" font-family="Arial" font-size="16">+ cargarDesdeArchivo(rutaArchivo) : bool</text>
+  <text x="582" y="498" fill="#111111" font-family="Arial" font-size="16">+ coutTopologia()</text>
+  <text x="582" y="526" fill="#111111" font-family="Arial" font-size="16">+ coutTablas()</text>
+
+  <line x1="560" y1="145" x2="450" y2="145" stroke="#111111" stroke-width="2" marker-end="url(#flecha)"/>
+  <text x="535" y="132" fill="#111111" font-family="Arial" font-size="16">1</text>
+  <text x="460" y="132" fill="#111111" font-family="Arial" font-size="16">0..*</text>
+  <text x="492" y="170" fill="#111111" font-family="Arial" font-size="16">contiene</text>
+
+  <rect x="260" y="590" width="480" height="80" fill="#ffffff" stroke="#111111" stroke-width="2" stroke-dasharray="8 5"/>
+  <rect x="260" y="590" width="480" height="34" fill="#fef3c7" stroke="#111111" stroke-width="2" stroke-dasharray="8 5"/>
+  <text x="500" y="613" text-anchor="middle" fill="#111111" font-family="Arial" font-size="18" font-weight="bold">Funciones auxiliares</text>
+  <text x="285" y="645" fill="#111111" font-family="Arial" font-size="16">calcularRutas(fuente : Router*)</text>
+  <text x="285" y="666" fill="#111111" font-family="Arial" font-size="16">obtenerRuta(destino : Router*) : vector&lt;int&gt;</text>
+
+  <line x1="250" y1="490" x2="380" y2="590" stroke="#111111" stroke-width="2" marker-end="url(#flecha)"/>
+  <line x1="755" y1="550" x2="620" y2="590" stroke="#111111" stroke-width="2" marker-end="url(#flecha)"/>
+</svg>
