@@ -1,5 +1,6 @@
 #include "Red.h"
 
+#include <algorithm>
 #include <climits>
 #include <iostream>
 
@@ -18,6 +19,60 @@ void Red::conectarRouters(int origen, int destino, int costo) {
 
     routerOrigen->nuevoVecino(routerDestino, costo);
     routerDestino->nuevoVecino(routerOrigen, costo);
+}
+
+bool Red::eliminarRouter(int id) {
+    auto it = routers.find(id);
+    if (it == routers.end()) {
+        return false;
+    }
+
+    for (auto& par : routers) {
+        auto& vecinos = par.second.vecinos;
+        vecinos.erase(
+            remove_if(vecinos.begin(), vecinos.end(),
+                      [id](const pair<Router*, int>& vecino) {
+                          return vecino.first->idRouter == id;
+                      }),
+            vecinos.end());
+    }
+
+    routers.erase(it);
+    actualizarTablas();
+    return true;
+}
+
+bool Red::eliminarEnlace(int origen, int destino) {
+    auto itOrigen = routers.find(origen);
+    auto itDestino = routers.find(destino);
+    if (itOrigen == routers.end() || itDestino == routers.end()) {
+        return false;
+    }
+
+    auto& vecinosOrigen = itOrigen->second.vecinos;
+    auto tamAnteriorOrigen = vecinosOrigen.size();
+    vecinosOrigen.erase(
+        remove_if(vecinosOrigen.begin(), vecinosOrigen.end(),
+                  [destino](const pair<Router*, int>& vecino) {
+                      return vecino.first->idRouter == destino;
+                  }),
+        vecinosOrigen.end());
+
+    auto& vecinosDestino = itDestino->second.vecinos;
+    auto tamAnteriorDestino = vecinosDestino.size();
+    vecinosDestino.erase(
+        remove_if(vecinosDestino.begin(), vecinosDestino.end(),
+                  [origen](const pair<Router*, int>& vecino) {
+                      return vecino.first->idRouter == origen;
+                  }),
+        vecinosDestino.end());
+
+    if (tamAnteriorOrigen == vecinosOrigen.size() && tamAnteriorDestino == vecinosDestino.size()) {
+        return false;
+    }
+
+    actualizarTablas();
+    return true;
 }
 
 void Red::actualizarTablas() {
